@@ -1,0 +1,100 @@
+.alertContainer {
+  display: flex;
+  height: 1px;
+  position: absolute;
+  top: 30px;
+  left: 0;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10000;
+
+  a {
+    text-decoration: underline;
+    color: white;
+  }
+
+}
+.alert {
+  animation: fadein 0.2s ease-in alternate;
+  position: relative;
+  margin-bottom: 35px;
+  display: flex;
+  max-width: 760px;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 12px 48px -16px rgba(33, 160, 56, 0.45);
+  border-radius: 12px;
+  padding: 20px 32px 20px 32px;;
+  font-family: Inter, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: -0.005em;
+  color: #FFFFFF;
+
+}
+.error{
+  max-width: 760px;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 12px 48px -16px #F54242;
+  background-color: #F54242;
+  border-radius: 12px;
+  padding: 20px 32px 20px 32px;;
+  font-family: Inter, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: -0.005em;
+  color: #FFFFFF;
+}
+.success{
+  max-width: 760px;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 12px 48px -16px rgba(33, 160, 56, 0.45);
+  background-color: #2CBA5F;
+  border-radius: 12px;
+  padding: 20px 32px 20px 32px;;
+  font-family: Inter, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: -0.005em;
+  color: #FFFFFF;
+}
+.closeIcon{
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+
+  & svg path {
+    fill: #FFFFFF;
+  }
+}
+.titled {
+  flex-direction: column;
+
+  & > h4 {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 32px;
+    letter-spacing: -0.01em;
+    font-feature-settings: 'pnum' on, 'lnum' on, 'ordn' on, 'cv01' on, 'cv02' on, 'cv05' on, 'cv09' on;
+  }
+
+  & > p {
+    font-size: 16px;
+    margin-top: 8px;
+  }
+}
+@keyframes fadein {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

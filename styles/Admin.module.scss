@@ -1,0 +1,16 @@
+.admin {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+}
+
+.header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+
+  height: 60px;
+  background-color: #ECEFF3;
+}

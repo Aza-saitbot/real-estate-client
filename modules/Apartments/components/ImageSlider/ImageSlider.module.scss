@@ -1,0 +1,71 @@
+.imageSwitch {
+  width: 100%;
+  svg {
+    width: 15px;
+    height: 15px;
+  }
+  position: relative;
+
+  button {
+    position: absolute;
+    background-color: white;
+    border: none;
+    padding: 10px;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    cursor: pointer;
+    top: 50%;
+    transform: translateY(-50%);
+
+  }
+  &:hover {
+    .prev{
+      display: block;
+    }
+    .next{
+      display: block;
+    }
+  }
+}
+
+.apartmentImage {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
+
+
+}
+
+.prev {
+  display: none;
+  left: 15px;
+  position: absolute;
+  background-color: white;
+  border: none;
+  padding: 6px;
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  cursor: pointer;
+  top: 50%;
+  transform: translateY(-50%);
+
+}
+
+.next {
+  display: none;
+  right: 15px;
+  position: absolute;
+  background-color: white;
+  border: none;
+  padding: 6px;
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  cursor: pointer;
+  top: 50%;
+  transform: translateY(-50%);
+
+}

@@ -1,0 +1,44 @@
+
+.wrapper{
+  padding-top: 3px;
+  background-color: #F0F4F7;
+}
+.createApartment {
+  margin: 0 auto;
+  display: grid;
+  min-height: 80vh;
+  position: relative;
+  max-width: 870px;
+  padding: 24px;
+  background-color: white;
+  border-radius: 8px;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  height: 60px;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+  background-color: white;
+  border-bottom: 3px solid #ECEFF3;
+}
+
+.headerButtons {
+  display: flex;
+  column-gap: 8px;
+}
+
+.list {
+  display: grid;
+  row-gap: 15px;
+  margin: 15px 0;
+}
+
+.widthInput {
+  width: 100%;
+}

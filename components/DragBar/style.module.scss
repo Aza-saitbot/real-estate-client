@@ -1,0 +1,68 @@
+.dragBar {
+  display: grid;
+  justify-items: center;
+  height: 400px;
+  overflow-y: scroll;
+
+}
+
+.item {
+  position: relative;
+  width: 95%;
+}
+
+.dropzone {
+  display: grid;
+}
+
+.area {
+  width: 100%;
+  margin-top: 10px;
+  height: 380px;
+  background-color: #f4f7ff;
+  border: 1px dashed #5999ff;
+  border-radius: 10px;
+  display: grid;
+  align-items: center;
+  font-size: 24px;
+  justify-items: center;
+}
+
+.blockText {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  font-size: 16px;
+  font-weight: 530;
+  line-height: 24px;
+}
+
+.buttonDownload {
+  width: 180px;
+  height: 50px;
+  border-radius: 4px;
+  text-align: center;
+  margin: 25px;
+  cursor: pointer;
+  display: block;
+  font: 14px/50px Tahoma;
+  transition: all 0.18s ease-in-out;
+  border: 1px solid #5999ff;
+  background: linear-gradient(to top right, #5999ff, #5999ff 20%, rgba(255, 255, 255, 0) 80%, rgba(255, 255, 255, 0)) top right/500% 500%;
+  color: #5999ff;
+
+
+  &:hover {
+    color: white;
+    background-position: bottom left;
+  }
+}
+
+.my {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}

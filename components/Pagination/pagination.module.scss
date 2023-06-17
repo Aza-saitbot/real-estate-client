@@ -1,0 +1,28 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  background-color: green;
+  margin-bottom: 15px;
+  padding: 10px;
+}
+.pageNumber{
+  color: white;
+ padding: 50px;
+  background-color: blue;
+
+  span{
+    color: white;
+    padding: 50px;
+    background-color: blue;
+  }
+
+}
+
+.currentPage{
+  color: white;
+  padding: 10px;
+  background-color: red;
+
+}
