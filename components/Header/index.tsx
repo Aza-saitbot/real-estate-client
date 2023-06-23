@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 
 import * as Api from "@/api";
 import {useTranslation} from "next-i18next";
-import {useAppSelector} from "@/store/store";
+import {useAppSelector} from "@/redux/store";
 
 export const Header: React.FC = () => {
   const router = useRouter()

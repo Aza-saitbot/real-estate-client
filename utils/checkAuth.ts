@@ -17,7 +17,7 @@ export const checkAuth = async (ctx: GetServerSidePropsContext) => {
   } catch (err) {
     return {
       redirect: {
-        destination: "/admin/auth",
+        destination: "/auth",
         permanent: false,
       },
     };

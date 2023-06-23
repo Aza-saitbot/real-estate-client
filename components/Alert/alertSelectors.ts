@@ -1,4 +1,4 @@
-import {RootState} from "@/store/types";
+import {RootState} from "@/redux/types";
 
 export const alertsSelector = (state: RootState) => state.alerts.alerts;
 export const alertWithClosingSelector = (state: RootState) => state.alerts.alertWithClosing;

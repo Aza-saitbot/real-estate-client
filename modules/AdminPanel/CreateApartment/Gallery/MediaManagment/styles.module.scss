@@ -1,0 +1,61 @@
+.wrapper {
+  height: 400px;
+}
+
+.mediaManagement {
+  display: grid;
+  grid-template-rows: 70px minmax(400px, 1fr) 70px;
+  min-width: 900px;
+  height: 80%;
+  position: relative;
+}
+
+.header {
+  display: grid;
+  align-items: center;
+  padding-right: 15px;
+  border-bottom: 1px solid #ECEFF3;
+}
+
+.headerButton {
+  width: 100%;
+  display: grid;
+  justify-items: end;
+}
+
+.headerTitle {
+  display: grid;
+  align-items: center;
+  justify-items: left;
+  width: 100%;
+  height: 100%;
+}
+
+.addIcon {
+  margin: 0 5px 2px 0;
+
+  svg {
+    height: 18px;
+    width: 18px;
+  }
+}
+
+.closeIcon {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  cursor: pointer;
+
+  svg {
+    height: 18px;
+    width: 18px;
+  }
+}
+
+.footer {
+  display: grid;
+  align-items: center;
+  justify-items: end;
+  padding-right: 15px;
+  border-top: 1px solid #ECEFF3;
+}

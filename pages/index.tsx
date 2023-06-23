@@ -1,38 +1,34 @@
-import {FileItem} from "@/api/dto/files.dto";
-import {GetServerSidePropsContext,GetStaticPropsContext, NextPage} from "next";
-import {Files} from "@/modules/Files";
+import {GetStaticPropsContext, NextPage} from "next";
 import React from "react";
-import {checkAuth} from "@/utils/checkAuth";
-import * as Api from "@/api";
 import {serverSideTranslations} from "next-i18next/serverSideTranslations";
-import {wrapper} from "@/store/store";
 import {Layout} from "@/layout/Layout";
+import * as Api from "@/api";
+import {PER_PAGE} from "@/components/Pagination/config";
+import {IApartment} from "@/api/dto/apartments.dto";
+import ApartmentsList from "@/modules/Apartments/ApartmentsList";
 
 
 interface Props {
-    items: FileItem[];
+    apartments: Array<IApartment>
+    currentPage: number
 }
 
-const ApartmentsPage: NextPage<Props> = ({ items }) => {
+const ApartmentsPage: NextPage<Props> = (props) => {
     return (
-        <Layout>
-            <Files items={items} withActions />
+        <Layout title="Главная страница">
+            <ApartmentsList {...props}/>
         </Layout>
     );
 };
 
-ApartmentsPage.getLayout = (page: React.ReactNode) => {
-    return <Layout title="Dashboard / Главная">{page}</Layout>;
-};
-
-export const getStaticProps = wrapper.getStaticProps(async (ctx:GetStaticPropsContext) => {
+export const getStaticProps = async (ctx:GetStaticPropsContext) => {
     try {
-        const payload = await api.apartments.getApartments({limit: PER_PAGE, page: 1})
-        if (payload.apartments.length && ctx?.locale) {
+        const {apartments} = await Api.apartments.getApartments({limit: PER_PAGE, page: 1})
+        if (apartments.length) {
             return {
                 props: {
-                    ...(await serverSideTranslations(ctx.locale, ['common'])),
-                    ...payload,
+                    ...(await serverSideTranslations(ctx.locale as string, ['common'])),
+                    apartments,
                     currentPage: 1,
                 }
             };
@@ -41,6 +37,6 @@ export const getStaticProps = wrapper.getStaticProps(async (ctx:GetStaticPropsCo
     }
 
     return {props: {}};
-});
+};
 
 export default ApartmentsPage;

@@ -25,5 +25,5 @@ export const getMe = async (): Promise<User> => {
 };
 
 export const logout = () => {
-  destroyCookie(null, "_token", { path: "/" });
-};
+  destroyCookie(null,'_token',{path:'/'})
+}

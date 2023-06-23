@@ -1,7 +1,6 @@
 import Head from "next/head";
 import {Header} from "@/components/Header";
 import React from "react";
-
 import styles from "@/styles/Home.module.scss";
 import Alert from "@/components/Alert/Alert";
 
@@ -9,9 +8,7 @@ interface LayoutProps {
     title: string;
 }
 
-export const Layout: React.FC<React.PropsWithChildren<LayoutProps>> = ({
-                                                                           title,
-                                                                           children}) => {
+export const Layout: React.FC<React.PropsWithChildren<LayoutProps>> = ({title, children}) => {
     return (
         <>
             <Head>

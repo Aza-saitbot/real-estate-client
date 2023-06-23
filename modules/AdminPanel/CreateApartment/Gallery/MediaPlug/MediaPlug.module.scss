@@ -1,0 +1,41 @@
+.emptyWrapper{
+    display: grid;
+    align-items: center;
+    border: 1px dashed #5999ff;
+    border-radius: 10px;
+    justify-content: center;
+    width: 100%;
+    height: 200px;
+    &:hover{
+        background-color: #E7F0FF;
+        cursor: pointer;
+    }
+}
+
+.empty{
+    display: grid;
+    align-content: center;
+    width: 100%;
+    height: 100%;
+    position: relative;
+
+
+    image{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.emptyText{
+    display: grid;
+    justify-items: center;
+
+    button{
+        margin-top: 15px;
+    }
+}
+.addIcon{
+    height: 20px;
+}

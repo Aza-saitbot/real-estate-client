@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { nanoid } from 'nanoid';
-import {authThunk} from "@/entities/user/model/userReducer";
-import {createApartment, getOneApartment, uploadImages} from "@/entities/apartment/model";
+
 
 export type AlertType = {
   code?: number;
@@ -46,7 +45,7 @@ const initialState: AlertsModelType = {
 
 const generateId = () => nanoid();
 
-const alertModel = createSlice({
+const alertSlice = createSlice({
   name: 'alerts',
   initialState,
   reducers: {
@@ -95,6 +94,6 @@ const alertModel = createSlice({
   },
 });
 
-export const { removeAlert, addAlertWithCustomText, setAlertWithClosing, setAlertTextWithLink } = alertModel.actions;
+export const { removeAlert, addAlertWithCustomText, setAlertWithClosing, setAlertTextWithLink } = alertSlice.actions;
 
-export const alertReducer = alertModel.reducer;
+export const alertReducer = alertSlice.reducer;
