@@ -1,7 +1,7 @@
 import React from 'react';
 import {GetStaticPaths, GetStaticPropsContext} from "next";
 import {Layout} from "@/layout/Layout";
-import ApartmentsList from "@/modules/Apartments/ApartmentsList";
+import ApartmentsList from "@/modules/apartments/ApartmentsList";
 import {IApartment} from "@/api/dto/apartments.dto";
 import * as Api from "@/api";
 import {PER_PAGE} from "@/components/Pagination/config";

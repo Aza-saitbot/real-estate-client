@@ -1,9 +1,10 @@
-import {DashboardCustomizeTwoTone} from "@mui/icons-material";
 
 export interface IGetApartmentsRequest {
     limit:number
     page:number
 }
+
+
 
 export type IApartment = {
     id: number
@@ -13,10 +14,13 @@ export type IApartment = {
     categoryId: number
     employeeId: number
     address:string
-    images:string
+    images:Array<string>
 }
 
-export type CreateApartmentRequestType = Omit<IApartment, 'id'>
+export type GetApartmentResponseType = Omit<IApartment, 'images'> & { images:Array<{value:string}> }
+
+export type CreateApartmentRequestType = Omit<IApartment, 'id' | 'images'> & { images:string}
+export type EditApartmentRequestType = Omit<IApartment, 'images'> & { images:string}
 
 export interface IEmployee {
     id: number

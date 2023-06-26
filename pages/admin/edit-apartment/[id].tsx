@@ -1,24 +1,28 @@
 import React from 'react';
-import {wrapper} from "@/redux/store";
 import {serverSideTranslations} from "next-i18next/serverSideTranslations";
-import CreateApartment from "@/modules/AdminPanel/CreateApartment/CreateApartment";
-import {IApartment} from "@/modules/types";
+import CreateApartment from "@/modules/admin-panel/CreateApartment/CreateApartment";
+import {GetServerSidePropsContext} from "next";
+import {checkAuth} from "@/utils/checkAuth";
+import * as Api from "@/api";
+import {IApartment, ICategory, IEmployee} from "@/api/dto/apartments.dto";
 
-export type EditApartmentProps = {
-    editApartment?: IApartment
+export type CreateApartmentProps = {
+    editApartment: IApartment | null
+    employees: IEmployee[]
+    categories: ICategory[]
+
 }
-const EditApartmentPage = ({editApartment}: EditApartmentProps) => <CreateApartment editApartment={editApartment}/>
+const EditApartmentPage = (props: CreateApartmentProps) => <CreateApartment {...props}/>
 
 
-export const getServerSideProps = wrapper.getServerSideProps(async (ctx: GetServerSidePropsType) => {
-    const authProps = await api.checkAuth(ctx)
+export const getServerSideProps = async (ctx:GetServerSidePropsContext) => {
+    const authProps = await checkAuth(ctx)
 
     if ("redirect" in authProps) {
         return authProps
     }
-    const translationObj = {...(await serverSideTranslations(ctx.locale, ['common']))}
-    const isAdmin = ctx.store.getState().user.user.roles.includes('ADMIN')
-
+    const translationObj = {...(await serverSideTranslations(ctx.locale as string, ['common']))}
+    const isAdmin = authProps.props.user.roles.includes('ADMIN')
     if (!isAdmin) {
         return {
             redirect: {
@@ -31,35 +35,27 @@ export const getServerSideProps = wrapper.getServerSideProps(async (ctx: GetServ
     }
 
     try {
-        const {payload} = await ctx.store.dispatch(getOneApartment(ctx.query.id))
-        if (payload === 8) {
-            return {
-                redirect: {
-                    destination: `/${ctx.locale}/apartments`,
-                    locale: true,
-                    permanent: false
-                },
-                props: {...translationObj}
-            }
-        }
-        await getCategoriesEmployees(ctx)
-        return {
-            props: {
-                editApartment: payload,
-                ...translationObj
-            }
+        const employees = await Api.apartments.getEmployees()
+        const categories = await Api.apartments.getCategories()
+        const editApartmentId = ctx.query.id
+        let editApartment = null
+        if (editApartmentId){
+            editApartment = await Api.apartments.getOneApartment(editApartmentId)
         }
 
+        return {
+            props: {
+                ...translationObj,
+                employees,
+                categories,
+                editApartment
+            }
+        }
     } catch (e) {
         return {
-            redirect: {
-                destination: `/${ctx.locale}/apartments`,
-                locale: true,
-                permanent: false
-            },
             props: {...translationObj}
         }
     }
-})
+}
 
 export default EditApartmentPage;

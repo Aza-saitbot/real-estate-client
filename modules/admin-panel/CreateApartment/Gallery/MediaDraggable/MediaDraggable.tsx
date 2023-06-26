@@ -1,8 +1,6 @@
 import React, {useState} from 'react';
 import s from './styles.module.scss';
-import {Button, Tooltip} from "@mui/material";
-import AddIcon from '@mui/icons-material/Add';
-import CloseIcon from '@mui/icons-material/Close';
+import {Tooltip} from "@mui/material";
 import OpenWithIcon from "@mui/icons-material/OpenWith";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import {useRouter} from "next/router";

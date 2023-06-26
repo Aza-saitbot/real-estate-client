@@ -3,16 +3,16 @@ import s from './styles.module.scss';
 import {Button} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
-import DraggableImageList from "@/entities/DraggableImageList/DraggableImageList";
-import DragBar from "@/shared/ui/MediaDragAndDrop/MediaDragAndDrop";
 import {useFormContext} from "react-hook-form";
+import MediaDraggable from "@/modules/admin-panel/CreateApartment/Gallery/MediaDraggable/MediaDraggable";
+import MediaDragAndDrop from "@/modules/admin-panel/CreateApartment/Gallery/MediaDragAndDrop/MediaDragAndDrop";
 
 type DraggableImageListProps = {
     handlerCloseModal: () => void
 }
 const MediaManagement = ({handlerCloseModal}: DraggableImageListProps) => {
     const {getValues} = useFormContext()
-    const images: Array<string> = getValues('images')
+    const images: Array<string> = getValues().images
     const [modeManagement, setModeManagement] = useState<'list' | 'add'>('list')
     const isModeList = modeManagement === 'list'
 
@@ -61,9 +61,9 @@ const MediaManagement = ({handlerCloseModal}: DraggableImageListProps) => {
             </div>
             <div className={s.wrapper}>
                 {isModeList
-                    ? <DraggableImageList onHandlerAddMedia={onHandlerAddMedia} handlerCloseModal={handlerCloseModal}
+                    ? <MediaDraggable onHandlerAddMedia={onHandlerAddMedia} handlerCloseModal={handlerCloseModal}
                                           images={images}/>
-                    : <DragBar handlerSuccessDownload={handlerSuccessDownload} />
+                    : <MediaDragAndDrop handlerSuccessDownload={handlerSuccessDownload} />
                 }
             </div>
             <div className={s.footer}>

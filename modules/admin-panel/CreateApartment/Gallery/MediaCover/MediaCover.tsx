@@ -14,12 +14,12 @@ type MediaCoverProps = {
 }
 const MediaCover = ({handlerCloseModal}:MediaCoverProps) => {
     const {getValues,setValue} = useFormContext()
-    const images: Array<string> = getValues('images')
+    const images= getValues().images
     const isRemainingImages = images.length > VISIBLE_IMAGES
     const remainingImages = isRemainingImages ? images.length - VISIBLE_IMAGES : 0
 
     const clearImages = () => {
-        setValue('images', [])
+        setValue('images',[])
     }
 
 
@@ -28,7 +28,7 @@ const MediaCover = ({handlerCloseModal}:MediaCoverProps) => {
             <div className={s.list}>
                 {images.map(image =>
                     <div key={image}>
-                        <img className={s.item} width={200} height={120}
+                        <img width={200} height={120}
                              src={process.env.NEXT_PUBLIC_API_URL + image}
                              alt={`Image ${image}`}
                         />

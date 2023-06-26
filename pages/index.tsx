@@ -5,7 +5,7 @@ import {Layout} from "@/layout/Layout";
 import * as Api from "@/api";
 import {PER_PAGE} from "@/components/Pagination/config";
 import {IApartment} from "@/api/dto/apartments.dto";
-import ApartmentsList from "@/modules/Apartments/ApartmentsList";
+import ApartmentsList from "@/modules/apartments/ApartmentsList";
 
 
 interface Props {

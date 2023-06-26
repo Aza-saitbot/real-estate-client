@@ -1,18 +1,24 @@
+import {useFormContext, Controller, RegisterOptions, FieldValues, Control} from "react-hook-form";
+import {TextField, TextFieldProps} from "@mui/material";
+import {useStylesInput} from "@/components/Input/config";
+import {ErrorMessage} from "@hookform/error-message";
 
-type InputStyledType={
-    name:string
-    label:string
-    options:RegisterOptions
+
+type InputStyledType<TFieldValues> = {
+    name: keyof TFieldValues
+    label: string
+    options?: RegisterOptions
 } & TextFieldProps
-const InputStyled = ({name,label,options,...props}:InputStyledType) => {
-    const { control,formState } = useFormContext();
-    const s = useStylesInput()
+
+const Input = <TFieldValues extends FieldValues>({name, label, options, ...props}: InputStyledType<TFieldValues>) => {
+    const {control, formState} = useFormContext<TFieldValues>();
+    const s = useStylesInput();
 
     return (
         <div>
             <Controller
                 name={name}
-                control={control}
+                control={control as Control<TFieldValues>}
                 render={({ field }) => (
                     <TextField
                         {...field}
@@ -27,10 +33,9 @@ const InputStyled = ({name,label,options,...props}:InputStyledType) => {
                 name={name}
                 errors={formState.errors}
                 render={({ message }) => <p className={s.error}>{message}</p>}
-
             />
         </div>
     );
 };
 
-export default InputStyled;
+export default Input;

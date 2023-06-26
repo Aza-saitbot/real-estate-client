@@ -1,15 +1,14 @@
 import React, {useState} from 'react';
 import s from './MediaDragAndDrop.module.scss';
 import {useFormContext} from "react-hook-form";
-import {useAppDispatch} from "@/redux/store";
+import {uploadImages} from "@/api/apartments";
 
 
 type DragBarProps = {
     handlerSuccessDownload: () => void
 }
-const MediaDragAndDrop = ({handlerSuccessDownload}:DragBarProps) => {
+const MediaDragAndDrop = ({handlerSuccessDownload}: DragBarProps) => {
     const {setValue} = useFormContext()
-    const dispatch = useAppDispatch()
     const [drag, setDrag] = useState(false)
 
     const dragStartHandler = (e: React.DragEvent<HTMLDivElement>) => {
@@ -23,12 +22,16 @@ const MediaDragAndDrop = ({handlerSuccessDownload}:DragBarProps) => {
     };
 
     const fetchDownloadImages = async (files: FileList) => {
-        const res = await dispatch(uploadImages(files))
-        if (res.meta.requestStatus === 'fulfilled' && res.payload && typeof res.payload !== 'number')  {
-            console.log('res.payload',res.payload)
-            setValue('images', res.payload)
+        try {
+            const formData = new FormData()
+            for (let i = 0; i < files.length; i++) {
+                formData.append('images', files[i])
+            }
+            const images = await uploadImages(formData)
+            setValue('images', images)
             handlerSuccessDownload()
-        }
+        } catch (e) {}
+
     }
 
     const onDropHandler = async (e: React.DragEvent<HTMLDivElement>) => {

@@ -1,20 +1,19 @@
 import React from 'react';
-import s from './style.module.scss';
+import s from './CreateApartment.module.scss';
 import {useTranslation} from "next-i18next";
 import {FormProvider, useForm} from "react-hook-form";
-import {useAppDispatch, useAppSelector} from "@/redux/store";
-import Dropdown from "@/shared/ui/Dropdown";
 import {Button} from "@mui/material";
-import Input from "@/shared/ui/Input";
+import * as Api from "@/api/index";
 import {useRouter} from "next/router";
-import {EditApartmentProps} from "../../../pages/apartments/edit/[id]";
-import {createApartment, updateApartment} from "@/entities/apartments/model";
-import Gallery from "@/entities/Gallery/Gallery";
-import {CreateApartmentDto} from "@/shared/api/apartments/dto/CreateApartment.dto";
+import {CreateApartmentProps} from "@/pages/admin/edit-apartment/[id]";
+import * as types from "@/api/dto/apartments.dto";
+import Dropdown from "@/components/Dropdown";
+import Input from "@/components/Input";
+import Gallery from "@/modules/admin-panel/CreateApartment/Gallery/Gallery";
 
 const listCurrency = ['USD', 'EUR', 'RUB', 'TRY'].map(currency => ({id: currency, name: currency}))
 
-export type CreateEditApartmentFormType = {
+export type CreateApartmentFormType = {
     title: string
     currency: string
     price: number
@@ -24,15 +23,11 @@ export type CreateEditApartmentFormType = {
     images: Array<string>
 }
 
-const CreateApartment = ({editApartment}: EditApartmentProps) => {
+const CreateApartment = ({editApartment, employees, categories}: CreateApartmentProps) => {
     const {t, i18n} = useTranslation()
     const router = useRouter()
-    const dispatch = useAppDispatch()
-    const employees = useAppSelector(state => state.apartment.employees)
-        .map(({id,name})=>({id,name}))
-    const categories = useAppSelector(state => state.apartment.categories)
 
-    const defaultValues: CreateEditApartmentFormType = {
+    const defaultValues: CreateApartmentFormType = {
         title: editApartment?.title ? editApartment.title : '',
         currency: editApartment?.currency ?? listCurrency[0].name,
         price: editApartment?.price ? editApartment.price : 0,
@@ -41,8 +36,8 @@ const CreateApartment = ({editApartment}: EditApartmentProps) => {
         employeeId: editApartment?.employeeId ?? employees[0].id,
         images: editApartment?.images ?? []
     }
-    console.log('editApartment?.images',editApartment)
-    const methods = useForm<CreateEditApartmentFormType>({
+    console.log('editApartment?.images', editApartment)
+    const methods = useForm<CreateApartmentFormType>({
         mode: 'onSubmit',
         defaultValues
     })
@@ -50,26 +45,27 @@ const CreateApartment = ({editApartment}: EditApartmentProps) => {
 
     const onHandlerReset = async () => {
         methods.reset(defaultValues)
-        await router.push('/apartments')
+        await router.push('/admin-panel')
     }
-    const onHandlerSave = async (data: CreateEditApartmentFormType) => {
-        console.log('onHandlerSave',data)
-        if (editApartment){
-            const res = await dispatch(updateApartment({
-                ...data,
-                id: editApartment.id,
-                images:String(data.images)
-            }))
-            if (res.meta.requestStatus === 'fulfilled') {
-                await router.push('/apartments')
-            }
-        }else {
-            const res = await dispatch(createApartment({
-                ...data,
-                images:String(data.images)
-            }))
-            if (res.meta.requestStatus === 'fulfilled') {
-                await router.push('/apartments')
+    const onHandlerSave = async (data: CreateApartmentFormType) => {
+        console.log('onHandlerSave', data)
+        if (editApartment) {
+            try {
+                 await Api.apartments.updateApartment({
+                    ...data,
+                    id: editApartment.id,
+                    images: String(data.images)
+                })
+                await router.push('/admin-panel')
+            } catch (e) {}
+        } else {
+            try {
+                await Api.apartments.createApartment({
+                    ...data,
+                    images: ''
+                })
+                await router.push('/admin-panel')
+            } catch (e) {
             }
         }
     }
@@ -92,8 +88,10 @@ const CreateApartment = ({editApartment}: EditApartmentProps) => {
                                 </div>
                             </div>
                             <div className={s.list}>
-                                <Dropdown className={s.widthInput} name='employeeId' list={employees} label='Сотрудники'/>
-                                <Dropdown className={s.widthInput} name='categoryId' list={categories} label='Категории'/>
+                                <Dropdown className={s.widthInput} name='employeeId' list={employees}
+                                          label='Сотрудники'/>
+                                <Dropdown className={s.widthInput} name='categoryId' list={categories}
+                                          label='Категории'/>
                                 <Input className={s.widthInput} name="title" label="title"/>
                                 <Dropdown className={s.widthInput} name="currency" list={listCurrency} label='Валюта'/>
                                 <Input className={s.widthInput} name="price" label="price" type='number'/>
@@ -101,7 +99,7 @@ const CreateApartment = ({editApartment}: EditApartmentProps) => {
                                 <div>
                                     <h3>Gallery</h3>
                                 </div>
-                                <Gallery />
+                                <Gallery/>
                             </div>
                             <Button onClick={onHandlerCreateField} type='button' variant='outlined'>
                                 Добавить поле

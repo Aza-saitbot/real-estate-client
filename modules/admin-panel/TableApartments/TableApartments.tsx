@@ -6,8 +6,9 @@ import { IconButton, InputAdornment, TextField,Button,Typography} from "@mui/mat
 import { Search as IconSearch, Clear as IconClear } from '@mui/icons-material';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import { Delete } from '@mui/icons-material';
-import {useAppSelector} from "@/redux/store";
-import {IApartment} from "@/modules/types";
+import {DataAdminPanelType} from "@/api/apartments";
+import {IApartment} from "@/api/dto/apartments.dto";
+import TableApartmentCell from "@/modules/admin-panel/TableApartmentCell/TableApartmentCell";
 
 
 const CustomDataGrid = styled(DataGrid)(({ theme }) => ({
@@ -19,22 +20,19 @@ const CustomDataGrid = styled(DataGrid)(({ theme }) => ({
 
 const theme = createTheme();
 
-const TableApartments = () => {
+
+const TableApartments = ({apartments,employees,categories}:DataAdminPanelType) => {
     const router = useRouter()
-    const listApartments = useAppSelector(state => state.apartment.apartments)
-    // const employees = useAppSelector(state => state.apartments.employees)
-    // const categories = useAppSelector(state => state.apartments.categories)
-
-
     const [searchText, setSearchText] = useState('');
     const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
+    const [list,setList]=useState<IApartment[]>(apartments)
 
     const handleSelectionChange = (selection:  GridRowSelectionModel) => {
          setSelectedRows(selection);
     };
 
      const handlerEditApartment = async (id: number) => {
-        await router.push(`/apartments/edit/${id}`)
+        await router.push(`/admin/apartment-edit/${id}`)
     };
     // categoryId: number
     // employeeId: number
@@ -43,7 +41,7 @@ const TableApartments = () => {
         { field: 'id', headerName: 'ID', width: 70 },
         { field: 'title', headerName: 'Заголовок', width: 200,
             renderCell: (params: GridCellParams) => (
-                <EditableCell value={params.value as string} id={params.id as number} handlerEditApartment={handlerEditApartment} />
+                <TableApartmentCell value={params.value as string} id={params.id as number} handlerEditApartment={handlerEditApartment} />
             ),
         },
         { field: 'price', headerName: 'Цена', type:'number', width: 100 },
@@ -52,7 +50,6 @@ const TableApartments = () => {
         // { field: 'name', headerName: 'Название сотрудника', width: 130 },
         // { field: 'name', headerName: 'Статус', width: 130 },
     ];
-
 
 
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,7 +66,7 @@ const TableApartments = () => {
     };
 
 
-    const filteredRows: IApartment[] = listApartments.filter((row) =>
+    const filteredRows: IApartment[] = list.filter((row) =>
         Object.values(row).some((value) =>
             String(value).toLowerCase().includes(searchText.toLowerCase())
         )

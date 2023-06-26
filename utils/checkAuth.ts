@@ -9,11 +9,12 @@ export const checkAuth = async (ctx: GetServerSidePropsContext) => {
   axios.defaults.headers.Authorization = "Bearer " + _token;
 
   try {
-    await Api.auth.getMe();
-
+    const user = await Api.auth.getMe();
     return {
-      props: {},
-    };
+      props: {
+        user
+      },
+    }
   } catch (err) {
     return {
       redirect: {

@@ -1,9 +1,13 @@
 import axios from "@/core/axios";
 import * as types from "./dto/apartments.dto";
+import * as Api from "@/api/index";
 
 
-export const getAllApartmentsAPI = async (): Promise<types.IApartment[]> =>
-    (await axios.get('/apartment')).data
+export const getAllApartmentsAPI = async (): Promise<types.IApartment[]> =>{
+    const list:types.GetApartmentResponseType[] = (await axios.get('/apartment')).data
+    return list.map(apartment => ({...apartment,images:apartment.images.map(item => item.value)}) )
+}
+
 
 export const getApartments = async (requestOptions: types.IGetApartmentsRequest): Promise<types.IApartment[]> => {
     try {
@@ -15,19 +19,34 @@ export const getApartments = async (requestOptions: types.IGetApartmentsRequest)
     }
 }
 
-export const createApartmentAPI = async (requestOptions: types.CreateApartmentRequestType): Promise<types.IApartment> =>
-    (await axios.post('apartment', requestOptions)).data
+export type DataAdminPanelType = {
+    apartments: types.IApartment[]
+    employees: types.IEmployee[]
+    categories: types.ICategory[]
+}
+export const getDataAdminPanel = async ():Promise<DataAdminPanelType> => {
+    try {
+        const apartments = await Api.apartments.getAllApartmentsAPI()
+        const employees = await Api.apartments.getEmployees()
+        const categories = await Api.apartments.getCategories()
+        return { apartments, employees, categories }
+    }catch (e) {
 
-export const updateApartmentAPI = async (requestOptions: types.IApartment): Promise<types.IApartment> =>{
-    const {id,...rest} = requestOptions
-    return (await axios.put(`apartment/${id}`, rest)).data
+    }
 }
 
+export const createApartment = async (requestOptions: types.CreateApartmentRequestType): Promise<types.IApartment> =>
+    (await axios.post('/apartment', requestOptions)).data
 
-export const getOneApartmentAPI = async (id: string): Promise<types.IApartment> =>
+export const updateApartment = async (requestOptions: types.EditApartmentRequestType): Promise<types.IApartment> =>{
+    const {id,...rest} = requestOptions
+    return (await axios.put(`/apartment/${id}`, rest)).data
+}
+
+export const getOneApartment = async (id: string): Promise<types.IApartment> =>
     (await axios.get(`/apartment/${id}`)).data
 
-export const uploadImagesAPI = async (images:FormData): Promise<Array<string>> =>
+export const uploadImages = async (images:FormData): Promise<Array<string>> =>
     (await axios.post('files/upload',images)).data
 
 export const createEmployee = async (dto:types.CreateEmployeeRequest):Promise<types.IEmployee> => {

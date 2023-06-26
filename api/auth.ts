@@ -4,7 +4,7 @@ import {
   LoginResponseDTO,
   RegisterFormDTO,
   RegisterResponseDTO,
-  User,
+  IUser, GetUserResponseDTO,
 } from "@/api/dto/auth.dto";
 import { destroyCookie } from "nookies";
 
@@ -20,8 +20,9 @@ export const register = async (
   return (await axios.post("/auth/register", values)).data;
 };
 
-export const getMe = async (): Promise<User> => {
-  return (await axios.get("/users/me")).data;
+export const getMe = async (): Promise<IUser> => {
+  const user:GetUserResponseDTO = (await axios.get("/users/me")).data
+  return {...user,roles:user.roles.map(item => item.value)}
 };
 
 export const logout = () => {

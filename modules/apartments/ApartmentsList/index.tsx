@@ -2,8 +2,8 @@ import React from 'react';
 import Pagination from "@/components/Pagination";
 import {PER_PAGE} from "@/components/Pagination/config";
 import s from "./ApartmentsList.module.scss";
-import ApartmentCard from "@/modules/Apartments/ApartmentCard/ApartmentCard";
-import ApartmentsPlug from "@/modules/Apartments/ApartmentsPlug";
+import ApartmentCard from "@/modules/apartments/ApartmentCard/ApartmentCard";
+import ApartmentsPlug from "@/modules/apartments/ApartmentsPlug";
 import {IApartment} from "@/api/dto/apartments.dto";
 
 type ApartmentsListProps = {
