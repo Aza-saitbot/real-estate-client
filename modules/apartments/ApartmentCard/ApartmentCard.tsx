@@ -1,6 +1,6 @@
 import s from "./ApartmentCard.module.scss"
-import {IApartment} from "@/modules/types";
 import ImageSlider from "@/modules/apartments/ImageSlider/ImageSlider";
+import {IApartment} from "@/api/dto/apartments.dto";
 
 const ApartmentCard = ({title,price,images,address}:IApartment) => {
     return (

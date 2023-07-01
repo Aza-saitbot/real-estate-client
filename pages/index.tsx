@@ -16,27 +16,31 @@ interface Props {
 const ApartmentsPage: NextPage<Props> = (props) => {
     return (
         <Layout title="Главная страница">
-            <ApartmentsList {...props}/>
+            <ApartmentsList {...props} />
         </Layout>
     );
 };
 
-export const getStaticProps = async (ctx:GetStaticPropsContext) => {
-    try {
-        const {apartments} = await Api.apartments.getApartments({limit: PER_PAGE, page: 1})
-        if (apartments.length) {
-            return {
-                props: {
-                    ...(await serverSideTranslations(ctx.locale as string, ['common'])),
-                    apartments,
-                    currentPage: 1,
-                }
-            };
-        }
-    } catch (err) {
-    }
 
-    return {props: {}};
+export const getStaticProps = async (ctx: GetStaticPropsContext) => {
+    try {
+        const apartments = await Api.apartments.getApartments({limit: PER_PAGE, page: 1})
+        return {
+            props: {
+                apartments,
+                currentPage: 1,
+            }
+        };
+
+    } catch (err) {
+        return {
+            props: {
+                apartments: [],
+                currentPage: 1
+            }
+        };
+    }
 };
 
 export default ApartmentsPage;
+

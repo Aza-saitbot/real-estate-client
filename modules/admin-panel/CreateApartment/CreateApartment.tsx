@@ -5,7 +5,7 @@ import {FormProvider, useForm} from "react-hook-form";
 import {Button} from "@mui/material";
 import * as Api from "@/api/index";
 import {useRouter} from "next/router";
-import {CreateApartmentProps} from "@/pages/admin/edit-apartment/[id]";
+import {CreateEditApartmentProps} from "@/pages/admin-panel/edit-apartment/[id]";
 import * as types from "@/api/dto/apartments.dto";
 import Dropdown from "@/components/Dropdown";
 import Input from "@/components/Input";
@@ -23,7 +23,7 @@ export type CreateApartmentFormType = {
     images: Array<string>
 }
 
-const CreateApartment = ({editApartment, employees, categories}: CreateApartmentProps) => {
+const CreateApartment = ({editApartment, employees, categories}: CreateEditApartmentProps) => {
     const {t, i18n} = useTranslation()
     const router = useRouter()
 
@@ -45,7 +45,7 @@ const CreateApartment = ({editApartment, employees, categories}: CreateApartment
 
     const onHandlerReset = async () => {
         methods.reset(defaultValues)
-        await router.push('/admin-panel')
+        await router.push('/admin-panel-panel')
     }
     const onHandlerSave = async (data: CreateApartmentFormType) => {
         console.log('onHandlerSave', data)
@@ -56,7 +56,7 @@ const CreateApartment = ({editApartment, employees, categories}: CreateApartment
                     id: editApartment.id,
                     images: String(data.images)
                 })
-                await router.push('/admin-panel')
+                await router.push('/admin-panel-panel')
             } catch (e) {}
         } else {
             try {
@@ -64,7 +64,7 @@ const CreateApartment = ({editApartment, employees, categories}: CreateApartment
                     ...data,
                     images: ''
                 })
-                await router.push('/admin-panel')
+                await router.push('/admin-panel-panel')
             } catch (e) {
             }
         }

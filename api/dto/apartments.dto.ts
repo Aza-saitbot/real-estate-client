@@ -17,7 +17,7 @@ export type IApartment = {
     images:Array<string>
 }
 
-export type GetApartmentResponseType = Omit<IApartment, 'images'> & { images:Array<{value:string}> }
+export type GetApartmentResponseType = Omit<IApartment, 'images'> & { images:Array<{filename:string}> }
 
 export type CreateApartmentRequestType = Omit<IApartment, 'id' | 'images'> & { images:string}
 export type EditApartmentRequestType = Omit<IApartment, 'images'> & { images:string}

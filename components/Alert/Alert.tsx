@@ -1,6 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import s from './alert.module.scss';
 import {useTranslation} from "next-i18next";
+import {LayoutContext} from "@/layout/Layout";
 
 
 
@@ -11,11 +12,9 @@ export type AlertType = {
     color?: 'success' | 'error'
 };
 
-export type AlertProps = {
-    alert: AlertType | null
-}
-const Alert = ({alert = null}:AlertProps) => {
+const Alert = () => {
     const {t} = useTranslation();
+    const alertData = useContext(LayoutContext);
     const [alerts, setAlerts] = useState<Array<AlertType>>([])
 
     const removeAlert = () => {
@@ -26,10 +25,10 @@ const Alert = ({alert = null}:AlertProps) => {
     }
 
     useEffect(()=>{
-        if(alert){
-            setAlerts([...alerts, alert])
+        if(alertData){
+            setAlerts([...alerts, alertData])
         }
-    },[alert])
+    },[alertData])
 
     useEffect(() => {
         if (alerts.length > 0) {

@@ -1,12 +1,11 @@
 import CreateApartment from "@/modules/admin-panel/CreateApartment/CreateApartment";
-import {serverSideTranslations} from "next-i18next/serverSideTranslations";
 import {checkAuth} from "@/utils/checkAuth";
 import {GetServerSidePropsContext} from "next";
 import * as Api from "@/api";
-import {getOneApartment} from "@/api/apartments";
+import {CreateEditApartmentProps} from "@/pages/admin-panel/edit-apartment/[id]";
 
 
-const CreateApartmentPage = () => <CreateApartment/>
+const CreateApartmentPage = (props:CreateEditApartmentProps) => <CreateApartment {...props}/>
 
 export const getServerSideProps = async (ctx:GetServerSidePropsContext) => {
     const authProps = await checkAuth(ctx)
@@ -14,7 +13,7 @@ export const getServerSideProps = async (ctx:GetServerSidePropsContext) => {
     if ("redirect" in authProps) {
         return authProps
     }
-    const translationObj = {...(await serverSideTranslations(ctx.locale as string, ['common']))}
+
     const isAdmin = authProps.props.user.roles.includes('ADMIN')
     if (!isAdmin) {
         return {
@@ -23,29 +22,22 @@ export const getServerSideProps = async (ctx:GetServerSidePropsContext) => {
                 locale: true,
                 permanent: false
             },
-            props: {...translationObj}
+            props: {}
         }
     }
 
     try {
         const employees = await Api.apartments.getEmployees()
         const categories = await Api.apartments.getCategories()
-        const editApartmentId = ctx.query.id
-        let editApartment = null
-        if (editApartmentId){
-            editApartment = await Api.apartments.getOneApartment(editApartmentId)
-        }
-
         return {
             props: {
-                ...translationObj,
                 employees,
-                categories,
+                categories
             }
         }
     } catch (e) {
         return {
-            props: {...translationObj}
+            props: {}
         }
     }
 

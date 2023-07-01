@@ -6,13 +6,13 @@ import {checkAuth} from "@/utils/checkAuth";
 import * as Api from "@/api";
 import {IApartment, ICategory, IEmployee} from "@/api/dto/apartments.dto";
 
-export type CreateApartmentProps = {
-    editApartment: IApartment | null
+export type CreateEditApartmentProps = {
+    editApartment?: IApartment
     employees: IEmployee[]
     categories: ICategory[]
 
 }
-const EditApartmentPage = (props: CreateApartmentProps) => <CreateApartment {...props}/>
+const EditApartmentPage = (props: CreateEditApartmentProps) => <CreateApartment {...props}/>
 
 
 export const getServerSideProps = async (ctx:GetServerSidePropsContext) => {
@@ -35,12 +35,11 @@ export const getServerSideProps = async (ctx:GetServerSidePropsContext) => {
     }
 
     try {
+        let editApartment
         const employees = await Api.apartments.getEmployees()
         const categories = await Api.apartments.getCategories()
-        const editApartmentId = ctx.query.id
-        let editApartment = null
-        if (editApartmentId){
-            editApartment = await Api.apartments.getOneApartment(editApartmentId)
+        if (ctx.query.id){
+            editApartment = await Api.apartments.getOneApartment(ctx.query.id)
         }
 
         return {

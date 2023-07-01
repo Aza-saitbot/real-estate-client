@@ -5,14 +5,12 @@ import * as Api from "@/api/index";
 
 export const getAllApartmentsAPI = async (): Promise<types.IApartment[]> =>{
     const list:types.GetApartmentResponseType[] = (await axios.get('/apartment')).data
-    return list.map(apartment => ({...apartment,images:apartment.images.map(item => item.value)}) )
+    return list.map(apartment => ({...apartment,images:apartment.images.map(item => item.filename)}) )
 }
 
-
-export const getApartments = async (requestOptions: types.IGetApartmentsRequest): Promise<types.IApartment[]> => {
+export const getApartments = async ({limit, page}: types.IGetApartmentsRequest): Promise<types.IApartment[]> => {
     try {
         const listApartments = await getAllApartmentsAPI()
-        const {limit, page } = requestOptions
         return listApartments.slice((page - 1) * limit, page * limit)
     } catch (e) {
         return []
@@ -24,14 +22,14 @@ export type DataAdminPanelType = {
     employees: types.IEmployee[]
     categories: types.ICategory[]
 }
-export const getDataAdminPanel = async ():Promise<DataAdminPanelType> => {
+export const getDataAdminPanel = async () => {
     try {
         const apartments = await Api.apartments.getAllApartmentsAPI()
         const employees = await Api.apartments.getEmployees()
         const categories = await Api.apartments.getCategories()
         return { apartments, employees, categories }
     }catch (e) {
-
+        return null
     }
 }
 

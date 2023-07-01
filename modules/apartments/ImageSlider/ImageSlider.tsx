@@ -1,6 +1,8 @@
 import s from "./ImageSlider.module.scss"
 import {useState} from "react";
-import EmptyImage from "@/assets/images/empty.png";
+import EmptyImage from "@/public/assets/empty.png";
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 interface IImageSwitcher {
     images: Array<string>
@@ -23,7 +25,7 @@ const ImageSlider = ({images}: IImageSwitcher) => {
         setCurrentIndex((prevIndex) => (prevIndex === images.length - 1 ? 0 : prevIndex + 1));
     };
 
-    const srcImage = process.env.NEXT_PUBLIC_API_URL + 'images/' + images[currentIndex];
+    const srcImage = process.env.NEXT_PUBLIC_API_URL + images[currentIndex];
 
     return (
         <div className={s.imageSwitch}>

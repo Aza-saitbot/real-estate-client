@@ -1,7 +1,5 @@
 import React from 'react';
 import s from './MediaPlug.module.scss';
-import Image from "next/image";
-import EmptyImage from "../../../../../public/assets/empty.png";
 import {Button} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 

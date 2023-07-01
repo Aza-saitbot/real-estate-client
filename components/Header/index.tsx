@@ -1,42 +1,43 @@
-import React from "react";
+import React, {useContext} from "react";
 import s from "./Header.module.scss";
-
-import { useRouter } from "next/router";
-
+import {useRouter} from "next/router";
 import * as Api from "@/api";
 import {useTranslation} from "next-i18next";
-import {useAppSelector} from "@/redux/store";
+import {LayoutContext} from "@/layout/Layout";
 
-export const Header: React.FC = () => {
-  const router = useRouter()
-  const {asPath,locale} = router
-  const { t,i18n } = useTranslation()
-  const user = useAppSelector(state => state.user.user)
 
-  const onHandlerExit = async () => {
-    await router.push('/apartments','/apartments',{locale})
-  }
+export const Header = () => {
+    const router = useRouter()
+    const {t, i18n} = useTranslation()
+    const {user, setUser} = useContext(LayoutContext);
 
-  const onLogin = async () => {
-    await router.push('/auth','/auth',{locale})
-    api.auth.logout()
-  }
-  const onHome = async () => {
-    await router.push('/','/',{locale})
-  }
+    const onHandlerExit = () => {
+        Api.auth.logout()
+        setUser(null)
+    }
 
-  return (
-    <Header className={s.header}>
-        <div>
-          <button onClick={onHome}>Home</button>
+    /* await router.push('/admin-panel-panel','/admin-panel-panel',{locale})*/
+
+    const onLogin =  async () => {
+        await router.push('/auth', '/auth', {locale: i18n.language})
+    }
+
+    const onHome = async () => {
+        await router.push('/', '/', {locale: i18n.language})
+    }
+
+    return (
+        <div className={s.header}>
+            <div>
+                <button onClick={onHome}>Home</button>
+            </div>
+            <div>
+                {user && <div>{user?.fullName}</div>}
+                {user
+                    ? <button onClick={onHandlerExit}>Выйти</button>
+                    : <button onClick={onLogin}>Войти</button>
+                }
+            </div>
         </div>
-        <div >
-          <div>
-            {user?.fullName}
-          </div>
-          {user && <button onClick={onLogin}>Выйти</button>}
-          {!user && <button onClick={onHandlerExit}>Войти</button>}
-        </div>
-    </Header>
-  );
+    );
 };
