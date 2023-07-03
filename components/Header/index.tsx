@@ -10,13 +10,13 @@ export const Header = () => {
     const router = useRouter()
     const {t, i18n} = useTranslation()
     const {user, setUser} = useContext(LayoutContext);
-
+console.log('HEADERRRR user ',user)
     const onHandlerExit = () => {
         Api.auth.logout()
         setUser(null)
     }
 
-    /* await router.push('/admin-panel-panel','/admin-panel-panel',{locale})*/
+    /* await router.push('/admin-panel','/admin-panel',{locale})*/
 
     const onLogin =  async () => {
         await router.push('/auth', '/auth', {locale: i18n.language})

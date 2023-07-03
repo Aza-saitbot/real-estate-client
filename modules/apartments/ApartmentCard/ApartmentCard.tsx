@@ -1,11 +1,11 @@
 import s from "./ApartmentCard.module.scss"
-import ImageSlider from "@/modules/apartments/ImageSlider/ImageSlider";
+import ImageSlider from "@/components/ImageSlider/ImageSlider";
 import {IApartment} from "@/api/dto/apartments.dto";
 
 const ApartmentCard = ({title,price,images,address}:IApartment) => {
     return (
         <div className={s.card}>
-            <ImageSlider images={images}/>
+            <ImageSlider images={images} height={300} width={300}/>
             <div>
                 title: {title}
             </div>

@@ -5,13 +5,13 @@ import {checkAuth} from "@/utils/checkAuth";
 import {useContext} from "react";
 import {Layout, LayoutContext} from "@/layout/Layout";
 import * as React from "react";
-import {LoginForm} from "@/modules/auth-forms/LoginForm";
-import {RegisterForm} from "@/modules/auth-forms/RegisterForm";
+import {LoginForm} from "@/modules/auth-tabs/LoginForm";
+import {RegisterForm} from "@/modules/auth-tabs/RegisterForm";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import {TabPanel} from "@mui/base";
 import {Box} from "@mui/material";
-import AuthTabs from "@/modules/auth-forms/AuthTabs";
+import AuthTabs from "@/modules/auth-tabs/AuthTabs";
 
 function a11yProps(index: number) {
     return {
@@ -31,7 +31,7 @@ const AuthPage: NextPage = () => {
     );
 };
 
-export const getServerSideProps = async (ctx) => {
+export const getServerSideProps = async () => {
     return {props: {}};
 }
 

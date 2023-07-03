@@ -3,8 +3,8 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import {LoginForm} from "@/modules/auth-forms/LoginForm";
-import {RegisterForm} from "@/modules/auth-forms/RegisterForm";
+import {LoginForm} from "@/modules/auth-tabs/LoginForm";
+import {RegisterForm} from "@/modules/auth-tabs/RegisterForm";
 import {useTranslation} from "next-i18next";
 
 interface TabPanelProps {
@@ -54,7 +54,7 @@ export default function AuthTabs() {
     ]
 
     return (
-        <Box >
+        <div >
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                     {tabs.map((tab, index) => (
@@ -67,6 +67,6 @@ export default function AuthTabs() {
                     <Component/>
                 </TabPanel>
             ))}
-        </Box>
+        </div>
     );
 }

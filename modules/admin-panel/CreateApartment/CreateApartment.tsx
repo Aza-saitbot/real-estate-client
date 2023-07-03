@@ -45,7 +45,7 @@ const CreateApartment = ({editApartment, employees, categories}: CreateEditApart
 
     const onHandlerReset = async () => {
         methods.reset(defaultValues)
-        await router.push('/admin-panel-panel')
+        await router.push('/admin-panel')
     }
     const onHandlerSave = async (data: CreateApartmentFormType) => {
         console.log('onHandlerSave', data)
@@ -56,15 +56,15 @@ const CreateApartment = ({editApartment, employees, categories}: CreateEditApart
                     id: editApartment.id,
                     images: String(data.images)
                 })
-                await router.push('/admin-panel-panel')
+                await router.push('/admin-panel')
             } catch (e) {}
         } else {
             try {
                 await Api.apartments.createApartment({
                     ...data,
-                    images: ''
+                    images: String(data.images)
                 })
-                await router.push('/admin-panel-panel')
+                await router.push('/admin-panel')
             } catch (e) {
             }
         }
@@ -96,10 +96,8 @@ const CreateApartment = ({editApartment, employees, categories}: CreateEditApart
                                 <Dropdown className={s.widthInput} name="currency" list={listCurrency} label='Валюта'/>
                                 <Input className={s.widthInput} name="price" label="price" type='number'/>
                                 <Input className={s.widthInput} name="address" label="address"/>
-                                <div>
-                                    <h3>Gallery</h3>
-                                </div>
-                                <Gallery/>
+
+                                <Gallery />
                             </div>
                             <Button onClick={onHandlerCreateField} type='button' variant='outlined'>
                                 Добавить поле

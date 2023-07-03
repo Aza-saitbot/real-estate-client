@@ -3,9 +3,13 @@ import * as types from "./dto/apartments.dto";
 import * as Api from "@/api/index";
 
 
+const convertImages = (images: Array<{filename:string}>) => {
+    return images.map(item => item.filename)
+}
+
 export const getAllApartmentsAPI = async (): Promise<types.IApartment[]> =>{
     const list:types.GetApartmentResponseType[] = (await axios.get('/apartment')).data
-    return list.map(apartment => ({...apartment,images:apartment.images.map(item => item.filename)}) )
+    return list.map(apartment => ({...apartment,images:convertImages(apartment.images)} ))
 }
 
 export const getApartments = async ({limit, page}: types.IGetApartmentsRequest): Promise<types.IApartment[]> => {
@@ -22,7 +26,7 @@ export type DataAdminPanelType = {
     employees: types.IEmployee[]
     categories: types.ICategory[]
 }
-export const getDataAdminPanel = async () => {
+export const getDataAdminPanel = async ():Promise<DataAdminPanelType|null> => {
     try {
         const apartments = await Api.apartments.getAllApartmentsAPI()
         const employees = await Api.apartments.getEmployees()
@@ -41,8 +45,11 @@ export const updateApartment = async (requestOptions: types.EditApartmentRequest
     return (await axios.put(`/apartment/${id}`, rest)).data
 }
 
-export const getOneApartment = async (id: string): Promise<types.IApartment> =>
-    (await axios.get(`/apartment/${id}`)).data
+export const getOneApartment = async (id: string): Promise<types.IApartment> =>{
+    const apartment = (await axios.get(`/apartment/${id}`)).data
+    return {...apartment,images:convertImages(apartment.images)}
+}
+
 
 export const uploadImages = async (images:FormData): Promise<Array<string>> =>
     (await axios.post('files/upload',images)).data

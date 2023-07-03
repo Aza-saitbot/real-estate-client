@@ -2,14 +2,18 @@ import React from 'react';
 import s from './MediaPlug.module.scss';
 import {Button} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import {GalleryModeType} from "@/modules/admin-panel/CreateApartment/Gallery/Gallery";
 
 
 type ButtonWrapperProps = {
-    handlerOpenModal: () => void
+    setModeGallery: (mode: GalleryModeType) => void
 }
-const MediaPlug = ({handlerOpenModal}:ButtonWrapperProps) => {
+const MediaPlug = ({setModeGallery}:ButtonWrapperProps) => {
+    const openModalMedia = () => {
+      setModeGallery('media')
+    }
     return (
-            <div onClick={handlerOpenModal}  className={s.emptyWrapper}>
+            <div onClick={openModalMedia}  className={s.emptyWrapper}>
                 <div className={s.empty}>
                     <div className={s.emptyText}>
                         <Button  variant="text">

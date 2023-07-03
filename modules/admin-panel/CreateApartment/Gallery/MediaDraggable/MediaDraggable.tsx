@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import s from './styles.module.scss';
+import s from './MediaDraggable.module.scss';
 import {Tooltip} from "@mui/material";
 import OpenWithIcon from "@mui/icons-material/OpenWith";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
@@ -7,16 +7,13 @@ import {useRouter} from "next/router";
 
 type MediaDraggableProps = {
     images: Array<string>
-    handlerCloseModal: () => void
-    onHandlerAddMedia: () => void
+    setImages: React.Dispatch<React.SetStateAction<string[]>>
 }
-const MediaDraggable = ({images, handlerCloseModal, onHandlerAddMedia}: MediaDraggableProps) => {
+const MediaDraggable = ({images, setImages}: MediaDraggableProps) => {
     const [imageList, setImageList] = useState<Array<string>>(images);
     const [draggedImageIndex, setDraggedImageIndex] = useState<number | null>(null);
     const [hoveredImageIndex, setHoveredImageIndex] = useState<number | null>(null);
-    const url = useRouter()
-    console.log('url',url)
-console.log('MediaDraggable',images)
+
     const handleDragStart = (event: React.DragEvent<HTMLDivElement>, index: number) => {
         event.dataTransfer.setData('imageIndex', index.toString());
         setDraggedImageIndex(index);
@@ -30,6 +27,7 @@ console.log('MediaDraggable',images)
             updatedImageList.splice(draggedImageIndex, 1);
             updatedImageList.splice(index, 0, draggedImage);
             setImageList(updatedImageList);
+            setImages(updatedImageList);
             setDraggedImageIndex(index);
         }
     };
@@ -51,11 +49,6 @@ console.log('MediaDraggable',images)
         updatedImageList.splice(index, 1);
         setImageList(updatedImageList);
     };
-
-    const onSubmit = () => {
-        console.log('onSubmit')
-        handlerCloseModal()
-    }
 
     return (
         <div className={s.wrapper}>
@@ -84,11 +77,13 @@ console.log('MediaDraggable',images)
                         {hoveredImageIndex === index && (
                             <div className={s.hover}>
                                 <OpenWithIcon className={s.moveIcon}/>
-                                <Tooltip placement='top' title='Удалить'>
-                                    <DeleteOutlineIcon
-                                        onClick={() => handleDeleteImage(index)}
-                                        className={s.buttonDelete}/>
-                                </Tooltip>
+                                <div className={s.buttonDelete}>
+                                    <Tooltip placement='top' title='Удалить'>
+                                        <DeleteOutlineIcon
+                                            onClick={() => handleDeleteImage(index)}
+                                        />
+                                    </Tooltip>
+                                </div>
                             </div>
                         )}
                     </div>

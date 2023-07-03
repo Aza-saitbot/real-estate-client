@@ -32,7 +32,7 @@ const TableApartments = ({apartments,employees,categories}:DataAdminPanelType) =
     };
 
      const handlerEditApartment = async (id: number) => {
-        await router.push(`/admin/apartment-edit/${id}`)
+        await router.push(`/admin-panel/edit-apartment/${id}`)
     };
     // categoryId: number
     // employeeId: number

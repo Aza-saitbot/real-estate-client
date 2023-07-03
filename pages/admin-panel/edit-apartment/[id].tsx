@@ -5,6 +5,7 @@ import {GetServerSidePropsContext} from "next";
 import {checkAuth} from "@/utils/checkAuth";
 import * as Api from "@/api";
 import {IApartment, ICategory, IEmployee} from "@/api/dto/apartments.dto";
+import {Layout} from "@/layout/Layout";
 
 export type CreateEditApartmentProps = {
     editApartment?: IApartment
@@ -12,47 +13,45 @@ export type CreateEditApartmentProps = {
     categories: ICategory[]
 
 }
-const EditApartmentPage = (props: CreateEditApartmentProps) => <CreateApartment {...props}/>
+const EditApartmentPage = (props: CreateEditApartmentProps) => (
+    <Layout title='Страница/редактирования апартамента'>
+        <CreateApartment {...props}/>
+    </Layout>
+)
 
 
 export const getServerSideProps = async (ctx:GetServerSidePropsContext) => {
-    const authProps = await checkAuth(ctx)
-
-    if ("redirect" in authProps) {
-        return authProps
-    }
-    const translationObj = {...(await serverSideTranslations(ctx.locale as string, ['common']))}
-    const isAdmin = authProps.props.user.roles.includes('ADMIN')
-    if (!isAdmin) {
-        return {
-            redirect: {
-                destination: `/${ctx.locale}/user`,
-                locale: true,
-                permanent: false
-            },
-            props: {...translationObj}
-        }
-    }
-
     try {
-        let editApartment
-        const employees = await Api.apartments.getEmployees()
-        const categories = await Api.apartments.getCategories()
-        if (ctx.query.id){
-            editApartment = await Api.apartments.getOneApartment(ctx.query.id)
-        }
+        const {props} = await checkAuth(ctx)
 
-        return {
-            props: {
-                ...translationObj,
-                employees,
-                categories,
-                editApartment
+        if (props?.user?.roles.includes('ADMIN')) {
+            if (props?.user?.roles.includes('ADMIN')){
+                console.log('ctx.query.id',ctx.query.id)
+                const editApartment = await Api.apartments.getOneApartment(ctx.query.id as string)
+                console.log('editApartment',editApartment)
+                const employees = await Api.apartments.getEmployees()
+                const categories = await Api.apartments.getCategories()
+                return {
+                    props: {
+                        editApartment,
+                        employees,
+                        categories
+                    }
+                }
+            }else {
+                return {
+                    redirect: {
+                        destination: `/${ctx.locale}/user`,
+                        locale: true,
+                        permanent: false
+                    },
+                    props: {}
+                }
             }
         }
     } catch (e) {
         return {
-            props: {...translationObj}
+            props: {}
         }
     }
 }

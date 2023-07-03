@@ -1,14 +1,15 @@
 import React, {useState} from 'react';
-import s from './MediaDragAndDrop.module.scss';
+import s from './MediaDownload.module.scss';
 import {useFormContext} from "react-hook-form";
 import {uploadImages} from "@/api/apartments";
 
 
-type DragBarProps = {
+type MediaDownloadProps = {
     handlerSuccessDownload: () => void
+    setImages: React.Dispatch<React.SetStateAction<string[]>>
 }
-const MediaDragAndDrop = ({handlerSuccessDownload}: DragBarProps) => {
-    const {setValue} = useFormContext()
+const MediaDownload = ({handlerSuccessDownload,setImages}: MediaDownloadProps) => {
+    const {setValue,getValues} = useFormContext()
     const [drag, setDrag] = useState(false)
 
     const dragStartHandler = (e: React.DragEvent<HTMLDivElement>) => {
@@ -28,7 +29,9 @@ const MediaDragAndDrop = ({handlerSuccessDownload}: DragBarProps) => {
                 formData.append('images', files[i])
             }
             const images = await uploadImages(formData)
-            setValue('images', images)
+
+            setValue('images', [...getValues().images, ...images])
+            setImages(prevState => [...prevState, ...images])
             handlerSuccessDownload()
         } catch (e) {}
 
@@ -81,4 +84,4 @@ const MediaDragAndDrop = ({handlerSuccessDownload}: DragBarProps) => {
     );
 };
 
-export default MediaDragAndDrop;
+export default MediaDownload;

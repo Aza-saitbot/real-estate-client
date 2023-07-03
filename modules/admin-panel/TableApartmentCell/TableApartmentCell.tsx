@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import s from './TableApartmentCell.module.scss'
+import {Button} from "@mui/material";
 
 type EditableCellProps = {
     id:number
@@ -18,7 +19,7 @@ const TableApartmentCell = ({ handlerEditApartment,id,value }:EditableCellProps)
         setHovered(false);
     };
 
-    const handleButtonClick = () => {
+    const redirectEditApartment = () => {
         handlerEditApartment(id);
     };
 
@@ -29,7 +30,7 @@ const TableApartmentCell = ({ handlerEditApartment,id,value }:EditableCellProps)
             onMouseLeave={handleMouseLeave}
         >
             <span>{value}</span>
-            {isHovered && <Button variant='outlined' onClick={handleButtonClick}>Открыть</Button>}
+            {isHovered && <Button variant='outlined' onClick={redirectEditApartment}>Открыть</Button>}
         </div>
     );
 };

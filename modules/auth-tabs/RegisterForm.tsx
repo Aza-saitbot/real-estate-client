@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import s from "./AuthTabs.module.scss";
 import { setCookie } from "nookies";
-import { LoginFormDTO } from "@/api/dto/auth.dto";
+import {RegisterFormDTO} from "@/api/dto/auth.dto";
 import * as Api from "@/api";
 import {Form, useForm,FormProvider} from "react-hook-form";
 import {Button} from "@mui/material";
@@ -10,13 +10,13 @@ import {useRouter} from "next/router";
 import {useTranslation} from "next-i18next";
 import {LayoutContext} from "@/layout/Layout";
 
-export const LoginForm: React.FC = () => {
+export const RegisterForm: React.FC = () => {
   const router = useRouter()
   const {locale} = router
   const {t, i18n} = useTranslation()
   const { setUser } = useContext(LayoutContext);
 
-  const methods = useForm<LoginFormDTO>({
+  const methods = useForm<RegisterFormDTO>({
     mode: 'onSubmit',
     defaultValues: {
       email: '',
@@ -24,7 +24,7 @@ export const LoginForm: React.FC = () => {
     }
   });
 
-  const onSubmit = async (values: LoginFormDTO) => {
+  const onSubmit = async (values: RegisterFormDTO) => {
     try {
       const { token } = await Api.auth.login(values);
 
@@ -41,6 +41,7 @@ export const LoginForm: React.FC = () => {
 
   const options = {required: {value: true, message: 'Обязательное поле'}}
 
+
   return (
       <div>
         <FormProvider {...methods}>
@@ -48,7 +49,8 @@ export const LoginForm: React.FC = () => {
             <div className={s.formBlock}>
               <Input name='email' options={options} label="Email"/>
               <Input name='password' options={options} label="Password" type='password'/>
-              <Button type='submit' variant='outlined'>Авторизоваться</Button>
+              <Input name='fillName' options={options} label="Полное имя"/>
+              <Button type='submit' variant='outlined'>Зарегистрироваться</Button>
             </div>
           </form>
         </FormProvider>
