@@ -6,36 +6,40 @@ import {CreateEditApartmentProps} from "@/pages/admin-panel/edit-apartment/[id]"
 import {Layout} from "@/layout/Layout";
 
 
-const CreateApartmentPage = (props: CreateEditApartmentProps) => (
-    <Layout title='Страница/создании апартамента'>
+const CreateApartmentPage = ({user,...props}: CreateEditApartmentProps) => (
+    <Layout title='Страница/создании апартамента' user={user}>
         <CreateApartment {...props}/>
     </Layout>
 )
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+    const authProps = await checkAuth(ctx)
+    if ('redirect' in authProps) {
+        return authProps
+    }
     try {
-        const {props} = await checkAuth(ctx)
-
-        if (props?.user?.roles.includes('ADMIN')) {
-            if (props?.user?.roles.includes('ADMIN')) {
+        const user = authProps.props?.user
+        if (user) {
+            if (user?.roles.includes('ADMIN')) {
                 const employees = await Api.apartments.getEmployees()
                 const categories = await Api.apartments.getCategories()
                 return {
                     props: {
                         employees,
-                        categories
+                        categories,
+                        user
                     }
                 }
-            } else {
-                return {
-                    redirect: {
-                        destination: `/${ctx.locale}/user`,
-                        locale: true,
-                        permanent: false
-                    },
-                    props: {}
-                }
             }
+            return {
+                redirect: {
+                    destination: `/${ctx.locale}/user`,
+                    locale: true,
+                    permanent: false
+                },
+                props: {}
+            }
+
         }
     } catch (e) {
         return {

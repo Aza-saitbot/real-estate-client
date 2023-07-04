@@ -1,16 +1,17 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import s from './MediaPreview.module.scss';
 import {Button} from "@mui/material";
 import ImageSlider from "@/components/ImageSlider/ImageSlider";
 import CloseIcon from "@mui/icons-material/Close";
 import CachedIcon from "@mui/icons-material/Cached";
 import {GalleryModeType} from "@/modules/admin-panel/CreateApartment/Gallery/Gallery";
+import {LayoutContext} from "@/layout/Layout";
 
 type MediaDraggableProps = {
-    images: Array<string>
     setModeManagement: (mode: GalleryModeType) => void
 }
-const MediaPreview = ({images, setModeManagement}: MediaDraggableProps) => {
+const MediaPreview = ({setModeManagement}: MediaDraggableProps) => {
+    const {images} = useContext(LayoutContext)
     const onHandlerModeManagement = () => {
         setModeManagement('media')
     }

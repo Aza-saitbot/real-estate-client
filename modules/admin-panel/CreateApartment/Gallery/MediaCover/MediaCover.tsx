@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import s from './MediaCover.module.scss';
 import {Button} from "@mui/material";
 import CachedIcon from "@mui/icons-material/Cached";
@@ -7,17 +7,22 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import {useFormContext} from "react-hook-form";
 import {ButtonWrapper} from "@/components/ButtonWrapper/ButtonWrapper";
 import {GalleryModeType} from "@/modules/admin-panel/CreateApartment/Gallery/Gallery";
+import {LayoutContext} from "@/layout/Layout";
 
 const VISIBLE_IMAGES = 6
 
 type MediaCoverProps = {
     setModeGallery: (mode: GalleryModeType) => void
-    images: Array<string>
-    clearImages: () => void
+
 }
-const MediaCover = ({setModeGallery,images,clearImages}:MediaCoverProps) => {
+const MediaCover = ({setModeGallery}:MediaCoverProps) => {
+    const {setImages,images} = useContext(LayoutContext)
     const isRemainingImages = images.length > VISIBLE_IMAGES
     const remainingImages = isRemainingImages ? images.length - VISIBLE_IMAGES : 0
+
+    const clearImages = () => {
+      setImages([])
+    }
 
     const setMedia = () => {
         setModeGallery('media')

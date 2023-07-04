@@ -1,15 +1,14 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import s from './MediaDownload.module.scss';
-import {useFormContext} from "react-hook-form";
 import {uploadImages} from "@/api/apartments";
+import {LayoutContext} from "@/layout/Layout";
 
 
 type MediaDownloadProps = {
     handlerSuccessDownload: () => void
-    setImages: React.Dispatch<React.SetStateAction<string[]>>
 }
-const MediaDownload = ({handlerSuccessDownload,setImages}: MediaDownloadProps) => {
-    const {setValue,getValues} = useFormContext()
+const MediaDownload = ({handlerSuccessDownload}: MediaDownloadProps) => {
+    const {setImages} = useContext(LayoutContext)
     const [drag, setDrag] = useState(false)
 
     const dragStartHandler = (e: React.DragEvent<HTMLDivElement>) => {
@@ -29,11 +28,10 @@ const MediaDownload = ({handlerSuccessDownload,setImages}: MediaDownloadProps) =
                 formData.append('images', files[i])
             }
             const images = await uploadImages(formData)
-
-            setValue('images', [...getValues().images, ...images])
             setImages(prevState => [...prevState, ...images])
             handlerSuccessDownload()
-        } catch (e) {}
+        } catch (e) {
+        }
 
     }
 

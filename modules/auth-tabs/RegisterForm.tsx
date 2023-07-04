@@ -14,7 +14,6 @@ export const RegisterForm: React.FC = () => {
   const router = useRouter()
   const {locale} = router
   const {t, i18n} = useTranslation()
-  const { setUser } = useContext(LayoutContext);
 
   const methods = useForm<RegisterFormDTO>({
     mode: 'onSubmit',

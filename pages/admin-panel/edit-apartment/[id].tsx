@@ -6,16 +6,18 @@ import {checkAuth} from "@/utils/checkAuth";
 import * as Api from "@/api";
 import {IApartment, ICategory, IEmployee} from "@/api/dto/apartments.dto";
 import {Layout} from "@/layout/Layout";
+import {IUser} from "@/api/dto/auth.dto";
 
 export type CreateEditApartmentProps = {
     editApartment?: IApartment
     employees: IEmployee[]
     categories: ICategory[]
+    user?: IUser
 
 }
-const EditApartmentPage = (props: CreateEditApartmentProps) => (
-    <Layout title='Страница/редактирования апартамента'>
-        <CreateApartment {...props}/>
+const EditApartmentPage = ({user,...props}: CreateEditApartmentProps) => (
+    <Layout title='Страница/редактирования апартамента' user={user}>
+        <CreateApartment  {...props}/>
     </Layout>
 )
 

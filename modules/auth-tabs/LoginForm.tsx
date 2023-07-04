@@ -14,7 +14,6 @@ export const LoginForm: React.FC = () => {
   const router = useRouter()
   const {locale} = router
   const {t, i18n} = useTranslation()
-  const { setUser } = useContext(LayoutContext);
 
   const methods = useForm<LoginFormDTO>({
     mode: 'onSubmit',
@@ -31,8 +30,6 @@ export const LoginForm: React.FC = () => {
         path: "/",
       });
       await router.push('/admin-panel', '/admin-panel', {locale: i18n.language})
-      const { user } = await Api.auth.getMe()
-      setUser(user);
     } catch (err) {
       console.warn("LoginForm", err);
     }

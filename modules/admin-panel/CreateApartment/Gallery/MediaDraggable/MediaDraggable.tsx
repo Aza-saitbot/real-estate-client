@@ -1,15 +1,14 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import s from './MediaDraggable.module.scss';
 import {Tooltip} from "@mui/material";
 import OpenWithIcon from "@mui/icons-material/OpenWith";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import {useRouter} from "next/router";
+import {LayoutContext} from "@/layout/Layout";
 
-type MediaDraggableProps = {
-    images: Array<string>
-    setImages: React.Dispatch<React.SetStateAction<string[]>>
-}
-const MediaDraggable = ({images, setImages}: MediaDraggableProps) => {
+
+const MediaDraggable = () => {
+    const {setImages,images} = useContext(LayoutContext)
     const [imageList, setImageList] = useState<Array<string>>(images);
     const [draggedImageIndex, setDraggedImageIndex] = useState<number | null>(null);
     const [hoveredImageIndex, setHoveredImageIndex] = useState<number | null>(null);
@@ -48,6 +47,7 @@ const MediaDraggable = ({images, setImages}: MediaDraggableProps) => {
         const updatedImageList = [...imageList];
         updatedImageList.splice(index, 1);
         setImageList(updatedImageList);
+        setImages(updatedImageList);
     };
 
     return (

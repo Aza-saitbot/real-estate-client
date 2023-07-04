@@ -1,27 +1,10 @@
-import {GetServerSidePropsContext, NextPage} from "next";
+import {NextPage} from "next";
 import s from "@/styles/Auth.module.scss"
-import {useTranslation} from "next-i18next";;
-import {checkAuth} from "@/utils/checkAuth";
-import {useContext} from "react";
-import {Layout, LayoutContext} from "@/layout/Layout";
 import * as React from "react";
-import {LoginForm} from "@/modules/auth-tabs/LoginForm";
-import {RegisterForm} from "@/modules/auth-tabs/RegisterForm";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import {TabPanel} from "@mui/base";
-import {Box} from "@mui/material";
+import {Layout} from "@/layout/Layout";
 import AuthTabs from "@/modules/auth-tabs/AuthTabs";
 
-function a11yProps(index: number) {
-    return {
-        id: `simple-tab-${index}`,
-        'aria-controls': `simple-tabpanel-${index}`,
-    };
-}
-
 const AuthPage: NextPage = () => {
-
     return (
         <Layout title='Страница - Авторизации'>
             <div className={s.login}>

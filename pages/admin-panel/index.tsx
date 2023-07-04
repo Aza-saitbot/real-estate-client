@@ -8,15 +8,18 @@ import * as Api from "@/api";
 import {checkAuth} from "@/utils/checkAuth";
 import {DataAdminPanelType} from "@/api/apartments";
 import {Layout} from "@/layout/Layout";
+import {IUser} from "@/api/dto/auth.dto";
 
-const AdminPanelPage = (props: DataAdminPanelType) => {
+type AdminPanelPageProps = {
+    user: IUser
+} & DataAdminPanelType
+const AdminPanelPage = ({user,...props}: AdminPanelPageProps) => {
     const router = useRouter()
     const redirectCreateApartment = async () => {
         await router.push('admin-panel/create-apartment', 'admin-panel/create-apartment', {locale: router.locale})
     }
-    console.log('props', props)
     return (
-        <Layout title='Страница/панель администратора'>
+        <Layout title='Страница/панель администратора' user={user}>
             <div className={s.admin}>
                 <div className={s.header}>
                     <h3>Список недвижимостей</h3>
@@ -37,11 +40,15 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
         return authProps
     }
     try {
-        if (authProps.props?.user) {
-            if (authProps.props?.user?.roles.includes('ADMIN')) {
+        const user = authProps.props?.user
+        if (user) {
+            if (user?.roles.includes('ADMIN')) {
                 const data = await Api.apartments.getDataAdminPanel()
                 return {
-                    props: {...data}
+                    props: {
+                        ...data,
+                        user
+                    }
                 }
             }
             return {

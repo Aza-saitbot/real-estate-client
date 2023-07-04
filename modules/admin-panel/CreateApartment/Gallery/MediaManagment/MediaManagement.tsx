@@ -1,18 +1,18 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import s from './styles.module.scss';
 import {Button} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import MediaDraggable from "@/modules/admin-panel/CreateApartment/Gallery/MediaDraggable/MediaDraggable";
 import MediaDownload from "@/modules/admin-panel/CreateApartment/Gallery/MediaDownload/MediaDownload";
+import {LayoutContext} from "@/layout/Layout";
 
 
 type DraggableImageListProps = {
     handlerCloseModal: () => void
-    images: string[]
-    setImages: React.Dispatch<React.SetStateAction<string[]>>
 }
-const MediaManagement = ({handlerCloseModal,images,setImages}: DraggableImageListProps) => {
+const MediaManagement = ({handlerCloseModal}: DraggableImageListProps) => {
+    const {setImages,images} = useContext(LayoutContext)
     const [modeManagement, setModeManagement] = useState<'list' | 'add'>('list')
     const isModeList = modeManagement === 'list'
 
@@ -61,8 +61,8 @@ const MediaManagement = ({handlerCloseModal,images,setImages}: DraggableImageLis
             </div>
             <div className={s.wrapper}>
                 {isModeList
-                    ? <MediaDraggable images={images} setImages={setImages}/>
-                    : <MediaDownload setImages={setImages} handlerSuccessDownload={handlerSuccessDownload} />
+                    ? <MediaDraggable/>
+                    : <MediaDownload handlerSuccessDownload={handlerSuccessDownload} />
                 }
             </div>
             <div className={s.footer}>

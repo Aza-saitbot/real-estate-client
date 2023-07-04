@@ -2,16 +2,17 @@ import React, {useState} from 'react';
 import s from './TableApartments.module.scss'
 import {DataGrid, GridCellParams, GridColDef, GridRowSelectionModel} from '@mui/x-data-grid';
 import {useRouter} from "next/router";
-import { IconButton, InputAdornment, TextField,Button,Typography} from "@mui/material";
-import { Search as IconSearch, Clear as IconClear } from '@mui/icons-material';
-import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
-import { Delete } from '@mui/icons-material';
+import {IconButton, InputAdornment, TextField, Button, Typography} from "@mui/material";
+import {Search as IconSearch, Clear as IconClear} from '@mui/icons-material';
+import {createTheme, ThemeProvider, styled} from '@mui/material/styles';
+import {Delete} from '@mui/icons-material';
+import * as Api from "@/api";
 import {DataAdminPanelType} from "@/api/apartments";
 import {IApartment} from "@/api/dto/apartments.dto";
 import TableApartmentCell from "@/modules/admin-panel/TableApartmentCell/TableApartmentCell";
 
 
-const CustomDataGrid = styled(DataGrid)(({ theme }) => ({
+const CustomDataGrid = styled(DataGrid)(({theme}) => ({
 
     "& .MuiDataGrid-colCell": {
         backgroundColor: "#EAF7FF",
@@ -21,32 +22,34 @@ const CustomDataGrid = styled(DataGrid)(({ theme }) => ({
 const theme = createTheme();
 
 
-const TableApartments = ({apartments,employees,categories}:DataAdminPanelType) => {
+const TableApartments = ({apartments, employees, categories}: DataAdminPanelType) => {
     const router = useRouter()
     const [searchText, setSearchText] = useState('');
-    const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
-    const [list,setList]=useState<IApartment[]>(apartments)
+    const [selectedRows, setSelectedRows] = useState<Array<number>>([]);
+    const [list, setList] = useState<IApartment[]>(apartments)
 
-    const handleSelectionChange = (selection:  GridRowSelectionModel) => {
-         setSelectedRows(selection);
+    const handleSelectionChange = (selection: GridRowSelectionModel) => {
+        setSelectedRows(selection);
     };
 
-     const handlerEditApartment = async (id: number) => {
+    const handlerEditApartment = async (id: number) => {
         await router.push(`/admin-panel/edit-apartment/${id}`)
     };
     // categoryId: number
     // employeeId: number
 
     const columns: GridColDef[] = [
-        { field: 'id', headerName: 'ID', width: 70 },
-        { field: 'title', headerName: 'Заголовок', width: 200,
+        {field: 'id', headerName: 'ID', width: 70},
+        {
+            field: 'title', headerName: 'Заголовок', width: 200,
             renderCell: (params: GridCellParams) => (
-                <TableApartmentCell value={params.value as string} id={params.id as number} handlerEditApartment={handlerEditApartment} />
+                <TableApartmentCell value={params.value as string} id={params.id as number}
+                                    handlerEditApartment={handlerEditApartment}/>
             ),
         },
-        { field: 'price', headerName: 'Цена', type:'number', width: 100 },
-        { field: 'currency', headerName: 'Валюта', width: 70 },
-        { field: 'address', headerName: 'Адрес',width:200 },
+        {field: 'price', headerName: 'Цена', type: 'number', width: 100},
+        {field: 'currency', headerName: 'Валюта', width: 70},
+        {field: 'address', headerName: 'Адрес', width: 200},
         // { field: 'name', headerName: 'Название сотрудника', width: 130 },
         // { field: 'name', headerName: 'Статус', width: 130 },
     ];
@@ -60,9 +63,15 @@ const TableApartments = ({apartments,employees,categories}:DataAdminPanelType) =
         setSearchText('');
     };
 
-    const handleDeleteSelected = () => {
+    const handleDeleteSelected = async () => {
         // Обработка удаления выбранных строк
         console.log('Удаление выбранных строк', selectedRows);
+        try {
+            await Api.apartments.deleteApartments(selectedRows)
+            setList(prevState => prevState.filter((row) => !selectedRows.includes(row.id)))
+        } catch (e) {
+            console.log('ERROR ОШИБКА ', e)
+        }
     };
 
 
@@ -85,7 +94,7 @@ const TableApartments = ({apartments,employees,categories}:DataAdminPanelType) =
                             startAdornment: (
                                 <InputAdornment position="start">
                                     <IconButton>
-                                        <IconSearch />
+                                        <IconSearch/>
                                     </IconButton>
                                 </InputAdornment>
                             ),
@@ -93,7 +102,7 @@ const TableApartments = ({apartments,employees,categories}:DataAdminPanelType) =
                                 <InputAdornment position="end">
                                     {searchText && (
                                         <IconButton onClick={handleClearSearch}>
-                                            <IconClear />
+                                            <IconClear/>
                                         </IconButton>
                                     )}
                                 </InputAdornment>
@@ -104,7 +113,7 @@ const TableApartments = ({apartments,employees,categories}:DataAdminPanelType) =
                 <div className={s.deleteButtonContainer}>
                     <Button
                         variant="contained"
-                        startIcon={<Delete />}
+                        startIcon={<Delete/>}
                         onClick={handleDeleteSelected}
                         className={`${s.deleteButton} ${selectedRows.length > 0 ? s.visible : ''}`}
                     >
@@ -119,7 +128,7 @@ const TableApartments = ({apartments,employees,categories}:DataAdminPanelType) =
                         columns={columns}
                         initialState={{
                             pagination: {
-                                paginationModel: { page: 0, pageSize: 10 },
+                                paginationModel: {page: 0, pageSize: 10},
                             },
                         }}
                         autoHeight

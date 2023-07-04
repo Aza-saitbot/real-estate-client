@@ -27,14 +27,10 @@ export type DataAdminPanelType = {
     categories: types.ICategory[]
 }
 export const getDataAdminPanel = async ():Promise<DataAdminPanelType|null> => {
-    try {
         const apartments = await Api.apartments.getAllApartmentsAPI()
         const employees = await Api.apartments.getEmployees()
         const categories = await Api.apartments.getCategories()
         return { apartments, employees, categories }
-    }catch (e) {
-        return null
-    }
 }
 
 export const createApartment = async (requestOptions: types.CreateApartmentRequestType): Promise<types.IApartment> =>
@@ -50,6 +46,7 @@ export const getOneApartment = async (id: string): Promise<types.IApartment> =>{
     return {...apartment,images:convertImages(apartment.images)}
 }
 
+export const deleteApartments = async (ids: number[]) => await axios.delete(`/apartment`,{data:{ids}})
 
 export const uploadImages = async (images:FormData): Promise<Array<string>> =>
     (await axios.post('files/upload',images)).data
