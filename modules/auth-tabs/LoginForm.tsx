@@ -29,7 +29,9 @@ export const LoginForm: React.FC = () => {
       setCookie(null, "_token", token, {
         path: "/",
       });
-      await router.push('/admin-panel', '/admin-panel', {locale: i18n.language})
+      console.log('ROUTE')
+      await router.push('/admin-panel')
+      console.log('2222222 ROUTE')
     } catch (err) {
       console.warn("LoginForm", err);
     }

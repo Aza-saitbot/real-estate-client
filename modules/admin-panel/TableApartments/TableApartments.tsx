@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import s from './TableApartments.module.scss'
 import {DataGrid, GridCellParams, GridColDef, GridRowSelectionModel} from '@mui/x-data-grid';
 import {useRouter} from "next/router";
@@ -13,7 +13,6 @@ import TableApartmentCell from "@/modules/admin-panel/TableApartmentCell/TableAp
 
 
 const CustomDataGrid = styled(DataGrid)(({theme}) => ({
-
     "& .MuiDataGrid-colCell": {
         backgroundColor: "#EAF7FF",
     },
@@ -21,12 +20,13 @@ const CustomDataGrid = styled(DataGrid)(({theme}) => ({
 
 const theme = createTheme();
 
+type ConvertApartmentType = Omit<IApartment, 'categoryId' | 'employeeId'> & {category?: string, employee?: string}
 
 const TableApartments = ({apartments, employees, categories}: DataAdminPanelType) => {
     const router = useRouter()
     const [searchText, setSearchText] = useState('');
     const [selectedRows, setSelectedRows] = useState<Array<number>>([]);
-    const [list, setList] = useState<IApartment[]>(apartments)
+    const [list, setList] = useState<ConvertApartmentType[]>([])
 
     const handleSelectionChange = (selection: GridRowSelectionModel) => {
         setSelectedRows(selection);
@@ -49,9 +49,9 @@ const TableApartments = ({apartments, employees, categories}: DataAdminPanelType
         },
         {field: 'price', headerName: 'Цена', type: 'number', width: 100},
         {field: 'currency', headerName: 'Валюта', width: 70},
-        {field: 'address', headerName: 'Адрес', width: 200},
-        // { field: 'name', headerName: 'Название сотрудника', width: 130 },
-        // { field: 'name', headerName: 'Статус', width: 130 },
+        {field: 'address', headerName: 'Адрес', width: 130},
+        { field: 'employee', headerName: 'Сотрудник', width: 130 },
+        { field: 'category', headerName: 'Категория', width: 130 },
     ];
 
 
@@ -80,6 +80,21 @@ const TableApartments = ({apartments, employees, categories}: DataAdminPanelType
             String(value).toLowerCase().includes(searchText.toLowerCase())
         )
     );
+
+    useEffect(()=>{
+        if (apartments.length && employees.length && categories.length){
+            const convertApartments:ConvertApartmentType[] = apartments.map(({categoryId,employeeId,...data})=>{
+                const employee = employees.find(e => e.id === employeeId)?.name
+                const category = categories.find(c=> c.id === categoryId)?.name
+                return {
+                    ...data,
+                    employee,
+                    category,
+                }
+            })
+            setList(convertApartments)
+        }
+    },[apartments, employees, categories])
 
     return (
         <div className={s.content}>

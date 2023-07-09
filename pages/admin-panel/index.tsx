@@ -37,10 +37,12 @@ const AdminPanelPage = ({user,...props}: AdminPanelPageProps) => {
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     const authProps = await checkAuth(ctx)
     if ('redirect' in authProps) {
+        console.log('REDIRECT ADMI PAGE',authProps)
         return authProps
     }
     try {
         const user = authProps.props?.user
+        console.log('user',user)
         if (user) {
             if (user?.roles.includes('ADMIN')) {
                 const data = await Api.apartments.getDataAdminPanel()

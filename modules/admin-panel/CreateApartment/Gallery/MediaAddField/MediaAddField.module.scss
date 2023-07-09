@@ -1,0 +1,29 @@
+
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.content {
+  display: grid;
+    gap: 8px;
+  min-width: 400px;
+}
+
+.list {
+  display: grid;
+  gap: 8px;
+}
+
+.item {
+  display: flex;
+  gap: 8px;
+}
+.addField{
+  margin: 16px 0;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+}
